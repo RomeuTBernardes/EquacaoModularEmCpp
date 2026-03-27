@@ -17,12 +17,17 @@ typedef struct
 
 int main()
 {
-	string in = "|-2 * x - 1| + 2 = 7";
+	double b = 0;
+	double bNeg; 
+	int coeficiente;
+	int divisor = 1;
+	string in;
 
 	Token lista[50];
 	int indexLista = 0;
 
-	//cin >> in;
+	cout << "Digite a equação modular: " << endl;
+	getline(cin, in);
 
 	bool modulo = false;
 
@@ -93,10 +98,51 @@ int main()
 		indexLista++;
 	}
 
+	// isolando modulo
 	for(int i = 0; i < indexLista; i++)
 	{
+		if(lista[i].ladoEsquerdo && !lista[i].dentroModulo)
+		{
+			lista[i].positivo = !lista[i].positivo;
+			lista[i].ladoEsquerdo = false;
+		}
 
+		if(!lista[i].ladoEsquerdo)
+		{
+			coeficiente = stoi(lista[i].tok);
+			if(!lista[i].positivo) coeficiente *= -1;
+
+			b += coeficiente;
+		}
 	}
+
+	bNeg = b * -1;
+
+	for(int i = 0; i < indexLista; i++)
+	{
+		if(lista[i].ladoEsquerdo && !lista[i].eVariavel && !lista[i].multiplicando)
+		{
+			coeficiente = stoi(lista[i].tok);
+			if(lista[i].positivo) b -= coeficiente;
+			else b += coeficiente;
+			if(lista[i].positivo) bNeg -= coeficiente;
+			else bNeg += coeficiente;
+		}
+
+		if(lista[i].multiplicando && lista[i].ladoEsquerdo && !lista[i].eVariavel)
+		{
+			coeficiente = stoi(lista[i].tok);
+			if(!lista[i].positivo) coeficiente *= -1;
+			divisor *= coeficiente;
+		}
+	}
+
+	b = b/divisor;
+
+	bNeg = bNeg/divisor;
+
+	cout << "\nResultado de " << variavel << " para A = B: " << b << endl;
+	cout << "Resultado de " << variavel << " para A = -B: " << bNeg << endl;
 
 	return 0;
 }

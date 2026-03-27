@@ -26,4 +26,5 @@ in:
 out: 
 
 Resultado de x para A = B: -3
+
 Resultado de x para A = -B: 4.5

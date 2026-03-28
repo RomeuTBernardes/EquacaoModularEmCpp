@@ -13,6 +13,7 @@ typedef struct
 	bool positivo;
 	bool multiplicando = false;
 	bool eVariavel = false;
+	bool dividindo = false;
 } Token;
 
 int main()
@@ -21,6 +22,7 @@ int main()
 	double bNeg; 
 	int coeficiente;
 	int divisor = 1;
+	int multiplicador = 1;
 	string in;
 
 	Token lista[50];
@@ -72,6 +74,14 @@ int main()
 				
 		}
 
+		if(in[i] == '/')
+		{
+			lista[indexLista - 1].dividindo = true;
+			lista[indexLista].dividindo = true;
+			if(in[i + 1] == ' ') i++;
+			continue;
+		}
+
 		lista[indexLista].tok = in[i];
 
 		if(isdigit(in[i]))
@@ -117,10 +127,10 @@ int main()
 	}
 
 	bNeg = b * -1;
-
+	
 	for(int i = 0; i < indexLista; i++)
 	{
-		if(lista[i].ladoEsquerdo && !lista[i].eVariavel && !lista[i].multiplicando)
+		if(lista[i].ladoEsquerdo && !lista[i].eVariavel && !lista[i].multiplicando && !lista[i].dividindo)
 		{
 			coeficiente = stoi(lista[i].tok);
 			if(lista[i].positivo) b -= coeficiente;
@@ -135,11 +145,18 @@ int main()
 			if(!lista[i].positivo) coeficiente *= -1;
 			divisor *= coeficiente;
 		}
+
+		if(lista[i].dividindo && lista[i].ladoEsquerdo && !lista[i].eVariavel)
+		{
+			coeficiente = stoi(lista[i].tok);
+			if(!lista[i].positivo) coeficiente *= -1;
+			multiplicador *= coeficiente;
+		}
 	}
 
-	b = b/divisor;
+	b = (b/divisor)*multiplicador;
 
-	bNeg = bNeg/divisor;
+	bNeg = (bNeg/divisor)*multiplicador;
 
 	cout << "\nResultado de " << variavel << " para A = B: " << b << endl;
 	cout << "Resultado de " << variavel << " para A = -B: " << bNeg << endl;

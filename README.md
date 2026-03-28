@@ -7,8 +7,7 @@ Por enquanto, o programa apenas resolve equações que:
     
 - Possuem uma variável apenas;
 - Possuem variável apenas do lado esquerdo (A) da equação;
-- Realizam multiplicação apenas na variável;
-- Não realizam divisão.
+- Realizam multiplicação e divisão apenas na variável;
 
 Padrões de input:
 

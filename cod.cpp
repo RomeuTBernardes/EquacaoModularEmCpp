@@ -38,8 +38,6 @@ int main()
 
 	bool modulo = false;
 	bool esquerdoAtual = true;
-	bool proximoPositivo = true;
-	bool multAtual = false;
 
 	for(int i = 0; i < in.length(); i++)
 	{
@@ -57,13 +55,12 @@ int main()
 		
 		else if(in[i] == '+' or in[i] == ' ') 
 		{
-			proximoPositivo = true;
 			continue;
 		}
 
 		else if(in[i] ==  '-')
 		{
-			proximoPositivo = false;
+			lista[indexLista].positivo = false;
 			if(in[i + 1] == ' ') i++;
 			continue;
 		}
@@ -90,9 +87,16 @@ int main()
 			lista[indexLista].multiplicando = true;
 			lista[indexLista + 1].multiplicando = true;
 		}
+		
+		else if(!isdigit(in[i]) && !isalpha(in[i]))
+		{
+			cout << "ERRO: caractere (" << in[i] << ") inválido!" << endl;
+			return 1;
+		}
+			
+		lista[indexLista].tok = in[i];    
 
-
-		else if(isdigit(in[i]))
+		if(isdigit(in[i]))
 		{
 			i++;
 			while(isdigit(in[i]))
@@ -109,16 +113,8 @@ int main()
 			lista[indexLista].eVariavel = true;
 		}
 
-		else
-		{
-			cout << "ERRO: caractere (" << in[i] << ") inválido!" << endl;
-			return 1;
-		}
-			
-		lista[indexLista].tok = in[i];
 		lista[indexLista].ladoEsquerdo = esquerdoAtual;
 		lista[indexLista].dentroModulo = modulo;
-		lista[indexLista].positivo = proximoPositivo;
 
 		indexLista++;
 	}

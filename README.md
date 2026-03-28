@@ -7,12 +7,12 @@ Por enquanto, o programa apenas resolve equações que:
     
 - Possuem uma variável apenas;
 - Possuem variável apenas do lado esquerdo (A) da equação;
-- Realizam multiplicação e divisão apenas na variável;
+- Realizam multiplicação e divisão apenas na variável.
 
 Padrões de input:
 
-- Multiplicação sempre indicada explicitamente com '*' (ex: "2 * x", ao invés de "2x");
-- Parte "A" da equação do lado esquerdo (ou seja a parte com módulo);
+- Multiplicação pode ser indicada explicitamente com '*' ("2 * x") ou apenas colocando a variável ao lado do coeficiente ("2x");
+- Parte "A" da equação do lado esquerdo (ou seja, a parte com módulo);
 - Nunca mais de um espaço separando caracteres;
 - '|' para abrir e fechar o módulo.
 
@@ -20,7 +20,7 @@ Exemplo de input/output:
 
 in: 
 
-|-4 * x + 3| - 5 = 10
+|-4x + 3| - 5 = 10
 
 out: 
 

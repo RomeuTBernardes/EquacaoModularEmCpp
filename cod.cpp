@@ -82,6 +82,12 @@ int main()
 			continue;
 		}
 
+		if(isdigit(in[i]) && isalpha(in[i + 1]))
+		{
+			lista[indexLista].multiplicando = true;
+			lista[indexLista + 1].multiplicando = true;
+		}
+
 		lista[indexLista].tok = in[i];
 
 		if(isdigit(in[i]))
@@ -153,7 +159,7 @@ int main()
 			multiplicador *= coeficiente;
 		}
 	}
-
+	
 	b = (b/divisor)*multiplicador;
 
 	bNeg = (bNeg/divisor)*multiplicador;

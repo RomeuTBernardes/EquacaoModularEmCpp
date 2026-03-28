@@ -17,7 +17,7 @@ typedef struct
 
 int main()
 {
-	string in = "|-2 * x - 1| + 2 = 7";
+	string in = "|2x - 1| + 2 = 7";
 
 	Token lista[50];
 	int indexLista = 0;
@@ -65,6 +65,13 @@ int main()
 			if(in[i + 1] == ' ') i++;
 			continue;
 				
+		}
+
+		if(isdigit(in[i]) &&  isalpha(in[i + 1]))
+		{
+			cout << "Entrou\n";
+			lista[indexLista].multiplicando = true;
+			lista[indexLista + 1].multiplicando = true;
 		}
 
 		lista[indexLista].tok = in[i];

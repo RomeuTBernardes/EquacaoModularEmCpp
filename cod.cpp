@@ -21,8 +21,10 @@ int main()
 	double b = 0;
 	double bNeg; 
 	int coeficiente;
-	int divisor = 1;
-	int multiplicador = 1;
+	int divisorA = 0;
+	int divisorB = 0;
+	int multiplicadorA = 1;
+	int multiplicadorB;
 	string in;
 
 	Token lista[50];
@@ -123,11 +125,10 @@ int main()
 			lista[i].ladoEsquerdo = false;
 		}
 
-		if(!lista[i].ladoEsquerdo)
+		if(!lista[i].ladoEsquerdo && !lista[i].eVariavel && !lista[i].multiplicando)
 		{
 			coeficiente = stoi(lista[i].tok);
 			if(!lista[i].positivo) coeficiente *= -1;
-
 			b += coeficiente;
 		}
 	}
@@ -136,33 +137,58 @@ int main()
 	
 	for(int i = 0; i < indexLista; i++)
 	{
-		if(lista[i].ladoEsquerdo && !lista[i].eVariavel && !lista[i].multiplicando && !lista[i].dividindo)
+		if(lista[i].ladoEsquerdo)
 		{
-			coeficiente = stoi(lista[i].tok);
-			if(lista[i].positivo) b -= coeficiente;
-			else b += coeficiente;
-			if(lista[i].positivo) bNeg -= coeficiente;
-			else bNeg += coeficiente;
+			if(!lista[i].eVariavel && !lista[i].multiplicando && !lista[i].dividindo)
+			{
+				coeficiente = stoi(lista[i].tok);
+				if(lista[i].positivo) b -= coeficiente;
+				else b += coeficiente;
+				if(lista[i].positivo) bNeg -= coeficiente;
+				else bNeg += coeficiente;
+			}
+			
+			else if(lista[i].eVariavel && !lista[i].multiplicando)
+			{
+				if(lista[i].positivo) divisorA++;
+				else divisorA--;
+			}
+
+			else if(lista[i].multiplicando && !lista[i].eVariavel)
+			{
+				coeficiente = stoi(lista[i].tok);
+				if(!lista[i].positivo) coeficiente *= -1;
+				divisorA += coeficiente;
+			}
+
+			else if(lista[i].dividindo && !lista[i].eVariavel)
+			{
+				coeficiente = stoi(lista[i].tok);
+				if(!lista[i].positivo) coeficiente *= -1;
+				multiplicadorA *= coeficiente;
+			}
 		}
 
-		if(lista[i].multiplicando && lista[i].ladoEsquerdo && !lista[i].eVariavel)
+		else
 		{
-			coeficiente = stoi(lista[i].tok);
-			if(!lista[i].positivo) coeficiente *= -1;
-			divisor *= coeficiente;
-		}
+			if(lista[i].multiplicando && !lista[i].eVariavel)
+			{
+				coeficiente = stoi(lista[i].tok);
+				if(!lista[i].positivo) coeficiente *= -1; 
+				divisorB += coeficiente;
+			}
 
-		if(lista[i].dividindo && lista[i].ladoEsquerdo && !lista[i].eVariavel)
-		{
-			coeficiente = stoi(lista[i].tok);
-			if(!lista[i].positivo) coeficiente *= -1;
-			multiplicador *= coeficiente;
+			else if(lista[i].eVariavel && !lista[i].multiplicando)
+			{
+				if(lista[i].positivo) divisorB++;
+				else divisorB--;
+			}
 		}
 	}
-	
-	b = (b/divisor)*multiplicador;
 
-	bNeg = (bNeg/divisor)*multiplicador;
+	b = (b/(divisorA - divisorB))*multiplicadorA;
+
+	bNeg = (bNeg/(divisorA + divisorB))*multiplicadorA;
 
 	cout << "\nResultado de " << variavel << " para A = B: " << b << endl;
 	cout << "Resultado de " << variavel << " para A = -B: " << bNeg << endl;

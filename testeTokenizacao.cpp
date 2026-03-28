@@ -13,16 +13,23 @@ typedef struct
 	bool positivo;
 	bool multiplicando = false;
 	bool eVariavel = false;
+	bool dividindo = false;
 } Token;
 
 int main()
 {
-	string in = "|2x - 1| + 2 = 7";
+	double b = 0;
+	double bNeg; 
+	int coeficiente;
+	int divisor = 1;
+	int multiplicador = 1;
+	string in = "|x + x - x| + 1 = 2";
 
 	Token lista[50];
 	int indexLista = 0;
 
-	//cin >> in;
+	//cout << "Digite a equação modular: " << endl;
+	//getline(cin, in);
 
 	bool modulo = false;
 
@@ -35,7 +42,7 @@ int main()
 	{
 		if(in[i] == '|')
 		{
-			modulo = !modulo;				
+			modulo = !modulo;
 			continue;
 		}
 
@@ -67,9 +74,16 @@ int main()
 				
 		}
 
-		if(isdigit(in[i]) &&  isalpha(in[i + 1]))
+		if(in[i] == '/')
 		{
-			cout << "Entrou\n";
+			lista[indexLista - 1].dividindo = true;
+			lista[indexLista].dividindo = true;
+			if(in[i + 1] == ' ') i++;
+			continue;
+		}
+
+		if(isdigit(in[i]) && isalpha(in[i + 1]))
+		{
 			lista[indexLista].multiplicando = true;
 			lista[indexLista + 1].multiplicando = true;
 		}

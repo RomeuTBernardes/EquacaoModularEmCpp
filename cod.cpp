@@ -10,7 +10,7 @@ typedef struct
 	string tok;
 	bool ladoEsquerdo;
 	bool dentroModulo;
-	bool positivo;
+	bool positivo = true;
 	bool multiplicando = false;
 	bool eVariavel = false;
 	bool dividindo = false;
@@ -25,6 +25,7 @@ int main()
 	int divisorB = 0;
 	int multiplicadorA = 1;
 	int multiplicadorB;
+
 	string in;
 
 	Token lista[50];
@@ -33,9 +34,9 @@ int main()
 	cout << "Digite a equação modular: " << endl;
 	getline(cin, in);
 
-	bool modulo = false;
-
 	char variavel;
+
+	bool modulo = false;
 	bool esquerdoAtual = true;
 	bool proximoPositivo = true;
 	bool multAtual = false;
@@ -48,26 +49,26 @@ int main()
 			continue;
 		}
 
-		if(in[i] == '=')
+		else if(in[i] == '=')
 		{
-			esquerdoAtual = !esquerdoAtual;
+			esquerdoAtual = false;
 			continue;
 		}
 		
-		if(in[i] == '+' or in[i] == ' ') 
+		else if(in[i] == '+' or in[i] == ' ') 
 		{
 			proximoPositivo = true;
 			continue;
 		}
 
-		if(in[i] ==  '-')
+		else if(in[i] ==  '-')
 		{
 			proximoPositivo = false;
 			if(in[i + 1] == ' ') i++;
 			continue;
 		}
 
-		if(in[i] == '*')
+		else if(in[i] == '*')
 		{
 			lista[indexLista - 1].multiplicando = true;
 			lista[indexLista].multiplicando = true;
@@ -76,7 +77,7 @@ int main()
 				
 		}
 
-		if(in[i] == '/')
+		else if(in[i] == '/')
 		{
 			lista[indexLista - 1].dividindo = true;
 			lista[indexLista].dividindo = true;
@@ -84,15 +85,14 @@ int main()
 			continue;
 		}
 
-		if(isdigit(in[i]) && isalpha(in[i + 1]))
+		else if(isdigit(in[i]) && isalpha(in[i + 1]))
 		{
 			lista[indexLista].multiplicando = true;
 			lista[indexLista + 1].multiplicando = true;
 		}
 
-		lista[indexLista].tok = in[i];
 
-		if(isdigit(in[i]))
+		else if(isdigit(in[i]))
 		{
 			i++;
 			while(isdigit(in[i]))
@@ -109,6 +109,13 @@ int main()
 			lista[indexLista].eVariavel = true;
 		}
 
+		else
+		{
+			cout << "ERRO: caractere (" << in[i] << ") inválido!" << endl;
+			return 1;
+		}
+			
+		lista[indexLista].tok = in[i];
 		lista[indexLista].ladoEsquerdo = esquerdoAtual;
 		lista[indexLista].dentroModulo = modulo;
 		lista[indexLista].positivo = proximoPositivo;
@@ -184,6 +191,12 @@ int main()
 				else divisorB--;
 			}
 		}
+	}
+	
+	if(divisorA - divisorB == 0)
+	{
+		cout << "ERRO: variável zerada" << endl;
+		return 1;
 	}
 
 	b = (b/(divisorA - divisorB))*multiplicadorA;

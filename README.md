@@ -6,13 +6,15 @@ O programa principal que deve ser compilado para uso é "cod.cpp". O outro códi
 Por enquanto, o programa apenas resolve equações que: 
     
 - Possuem uma variável apenas;
-- Possuem variável apenas do lado esquerdo (A) da equação;
+- Não realizam potenciação;
+- Realizam apenas uma divisão com variável;
+- Realizam apenas multiplicação da variável do lado direito (B);
 - Realizam multiplicação e divisão apenas na variável.
 
 Padrões de input:
 
 - Multiplicação pode ser indicada explicitamente com '*' ("2 * x") ou apenas colocando a variável ao lado do coeficiente ("2x");
-- Parte "A" da equação do lado esquerdo (ou seja, a parte com módulo);
+- Parte "A" (parte com módulo) da equação sempre do lado esquerdo;
 - Nunca mais de um espaço separando caracteres;
 - '|' para abrir e fechar o módulo.
 

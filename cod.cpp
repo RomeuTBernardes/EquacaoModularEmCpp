@@ -34,9 +34,10 @@ int main()
 	cout << "Digite a equação modular: " << endl;
 	getline(cin, in);
 
-	char variavel;
+	char variavel = ' ';
 
 	bool divisorAtivado = false;
+	bool multiplicadorAtivado = false;
 	bool modulo = false;
 	bool esquerdoAtual = true;
 
@@ -110,6 +111,12 @@ int main()
 		
 		else if(isalpha(in[i]))
 		{
+			if(in[i] != variavel && variavel != ' ')
+			{
+				cout << "ERRO: este programa aceita apenas uma variável!" << endl;
+				return 1;
+			}
+
 			variavel = in[i];
 			lista[indexLista].eVariavel = true;
 		}
@@ -124,6 +131,7 @@ int main()
 	for(int i = 0; i < indexLista; i++)
 	{
 		if(!divisorAtivado && lista[i].multiplicando) divisorAtivado = true;
+		if(!multiplicadorAtivado && lista[i].dividindo) multiplicadorAtivado = true;
 
 		if(lista[i].ladoEsquerdo && !lista[i].dentroModulo)
 		{
@@ -189,10 +197,19 @@ int main()
 				if(lista[i].positivo) divisorB++;
 				else divisorB--;
 			}
+
+			else if(lista[i].dividindo && !lista[i].eVariavel)
+			{
+				coeficiente = stoi(lista[i].tok);
+				if(!lista[i].positivo) coeficiente *= -1;
+				multiplicadorB += 1/coeficiente;
+			}
 		}
 	}
 
+	// evitando divisão por zero
 	if(!divisorAtivado) divisorA = 1;
+	if(!multiplicadorAtivado) multiplicadorA = 1;
 
 	if(divisorA - divisorB == 0)
 	{

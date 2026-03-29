@@ -20,11 +20,11 @@ int main()
 {
 	double b = 0;
 	double bNeg; 
-	int coeficiente;
-	int divisorA = 0;
-	int divisorB = 0;
-	int multiplicadorA = 1;
-	int multiplicadorB;
+	double coeficiente;
+	double divisorA = 0;
+	double divisorB = 0;
+	double multiplicadorA = 0;
+	double multiplicadorB = 0;
 
 	string in;
 
@@ -36,6 +36,7 @@ int main()
 
 	char variavel;
 
+	bool divisorAtivado = false;
 	bool modulo = false;
 	bool esquerdoAtual = true;
 
@@ -122,6 +123,8 @@ int main()
 	// isolando modulo
 	for(int i = 0; i < indexLista; i++)
 	{
+		if(!divisorAtivado && lista[i].multiplicando) divisorAtivado = true;
+
 		if(lista[i].ladoEsquerdo && !lista[i].dentroModulo)
 		{
 			lista[i].positivo = !lista[i].positivo;
@@ -151,7 +154,7 @@ int main()
 				else bNeg += coeficiente;
 			}
 			
-			else if(lista[i].eVariavel && !lista[i].multiplicando)
+			else if(lista[i].eVariavel && !lista[i].multiplicando && !lista[i].dividindo)
 			{
 				if(lista[i].positivo) divisorA++;
 				else divisorA--;
@@ -168,7 +171,7 @@ int main()
 			{
 				coeficiente = stoi(lista[i].tok);
 				if(!lista[i].positivo) coeficiente *= -1;
-				multiplicadorA *= coeficiente;
+				multiplicadorA += 1/coeficiente;
 			}
 		}
 
@@ -188,16 +191,18 @@ int main()
 			}
 		}
 	}
-	
+
+	if(!divisorAtivado) divisorA = 1;
+
 	if(divisorA - divisorB == 0)
 	{
 		cout << "ERRO: variável zerada" << endl;
 		return 1;
 	}
 
-	b = (b/(divisorA - divisorB))*multiplicadorA;
+	b = (b/(divisorA - divisorB))/multiplicadorA;
 
-	bNeg = (bNeg/(divisorA + divisorB))*multiplicadorA;
+	bNeg = (bNeg/(divisorA + divisorB))/multiplicadorA;
 
 	cout << "\nResultado de " << variavel << " para A = B: " << b << endl;
 	cout << "Resultado de " << variavel << " para A = -B: " << bNeg << endl;

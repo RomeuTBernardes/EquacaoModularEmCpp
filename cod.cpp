@@ -16,6 +16,51 @@ typedef struct
 	bool dividindo = false;
 } Token;
 
+double provaReal(Token lista[], double b)
+{
+	int k = 0;
+	double coeficiente;
+	double resultado = 0;
+
+	while(lista[k].ladoEsquerdo)
+	{
+		if(lista[k].eVariavel) coeficiente = b;
+		else coeficiente = stod(lista[k].tok);
+			
+		if(!lista[k].positivo) coeficiente *= -1;
+		
+		if(lista[k].dividindo || lista[k].multiplicando) 
+		{
+			k++;
+			while(lista[k].dividindo || lista[k].multiplicando)
+			{
+				if(lista[k].multiplicando)
+				{	
+					if(lista[k].eVariavel) coeficiente *= b;
+					else coeficiente *= stod(lista[k].tok);
+				}
+
+				else
+				{
+					if(lista[k].eVariavel) coeficiente /= b;
+					else coeficiente /= stod(lista[k].tok);
+				}
+
+				if(!lista[k].positivo) coeficiente *= -1;
+				
+				k++;
+			}
+			k--;
+		}
+	
+		resultado += coeficiente;
+		
+		k++;
+	}
+
+	return resultado;
+}
+
 int main()
 {
 	double b = 0;
@@ -25,8 +70,6 @@ int main()
 	double divisorB = 0;
 	double multiplicadorA = 0;
 	double multiplicadorB = 0;
-	double condicaoPos;
-	double condicaoNeg;
 
 	string in;
 
@@ -129,6 +172,12 @@ int main()
 		indexLista++;
 	}
 
+	if(esquerdoAtual)
+	{
+		cout << "ERRO: não existe lado B na equação" << endl;
+		return 1;
+	}
+
 	// isolando modulo
 	for(int i = 0; i < indexLista; i++)
 	{
@@ -143,21 +192,23 @@ int main()
 
 		if(!lista[i].ladoEsquerdo && !lista[i].eVariavel && !lista[i].multiplicando && !lista[i].dividindo)
 		{
-			coeficiente = stoi(lista[i].tok);
+			coeficiente = stod(lista[i].tok);
 			if(!lista[i].positivo) coeficiente *= -1;
 			b += coeficiente;
 		}
 	}
 
+	double ladoDireito = b;
+
 	bNeg = b * -1;
-	
+
 	for(int i = 0; i < indexLista; i++)
 	{
 		if(lista[i].ladoEsquerdo)
 		{
 			if(!lista[i].eVariavel && !lista[i].multiplicando && !lista[i].dividindo)
 			{
-				coeficiente = stoi(lista[i].tok);
+				coeficiente = stod(lista[i].tok);
 				if(lista[i].positivo) b -= coeficiente;
 				else b += coeficiente;
 				if(lista[i].positivo) bNeg -= coeficiente;
@@ -172,14 +223,14 @@ int main()
 
 			else if(lista[i].multiplicando && !lista[i].eVariavel)
 			{
-				coeficiente = stoi(lista[i].tok);
+				coeficiente = stod(lista[i].tok);
 				if(!lista[i].positivo) coeficiente *= -1;
 				divisorA += coeficiente;
 			}
 
 			else if(lista[i].dividindo && !lista[i].eVariavel)
 			{
-				coeficiente = stoi(lista[i].tok);
+				coeficiente = stod(lista[i].tok);
 				if(!lista[i].positivo) coeficiente *= -1;
 				multiplicadorA += 1/coeficiente;
 			}
@@ -189,7 +240,7 @@ int main()
 		{
 			if(lista[i].multiplicando && !lista[i].eVariavel)
 			{
-				coeficiente = stoi(lista[i].tok);
+				coeficiente = stod(lista[i].tok);
 				if(!lista[i].positivo) coeficiente *= -1; 
 				divisorB += coeficiente;
 			}
@@ -202,7 +253,7 @@ int main()
 
 			else if(lista[i].dividindo && !lista[i].eVariavel)
 			{
-				coeficiente = stoi(lista[i].tok);
+				coeficiente = stod(lista[i].tok);
 				if(!lista[i].positivo) coeficiente *= -1;
 				multiplicadorB += 1/coeficiente;
 			}
@@ -222,8 +273,26 @@ int main()
 
 	bNeg = bNeg/(divisorA + divisorB + multiplicadorA + multiplicadorB);
 
-	cout << "\nResultado de " << variavel << " para A = B: " << b << endl;
-	cout << "Resultado de " << variavel << " para A = -B: " << bNeg << endl;
+	double prova1 = provaReal(lista, b);
+	double prova2 = provaReal(lista, bNeg);
+
+	bool temRaiz = false;
+	
+	cout << endl;
+
+	if((prova1 >= 0 && prova1 == ladoDireito) || (prova1 < 0 && -prova1 == ladoDireito)) 
+	{
+		cout << variavel << " = " << b << endl;
+		temRaiz = true;
+	}
+
+	if(((prova2 >= 0 && prova2 == ladoDireito) || (prova2 < 0 && -prova2 == ladoDireito)) && ladoDireito != 0) 
+	{
+		cout << variavel << " = " << bNeg << endl;
+		temRaiz = true;
+	}
+
+	if(!temRaiz) cout << "A equação não possui raizes reais" << endl;
 
 	return 0;
 }

@@ -16,7 +16,7 @@ typedef struct
 	bool dividindo = false;
 } Token;
 
-double provaReal(Token lista[], double b)
+double provaReal(Token lista[], double x)
 {
 	int k = 0;
 	double coeficiente;
@@ -24,7 +24,7 @@ double provaReal(Token lista[], double b)
 
 	while(lista[k].ladoEsquerdo)
 	{
-		if(lista[k].eVariavel) coeficiente = b;
+		if(lista[k].eVariavel) coeficiente = x;
 		else coeficiente = stod(lista[k].tok);
 			
 		if(!lista[k].positivo) coeficiente *= -1;
@@ -36,13 +36,13 @@ double provaReal(Token lista[], double b)
 			{
 				if(lista[k].multiplicando)
 				{	
-					if(lista[k].eVariavel) coeficiente *= b;
+					if(lista[k].eVariavel) coeficiente *= x;
 					else coeficiente *= stod(lista[k].tok);
 				}
 
 				else
 				{
-					if(lista[k].eVariavel) coeficiente /= b;
+					if(lista[k].eVariavel) coeficiente /= x;
 					else coeficiente /= stod(lista[k].tok);
 				}
 
@@ -63,8 +63,8 @@ double provaReal(Token lista[], double b)
 
 int main()
 {
-	double b = 0;
-	double bNeg; 
+	double solPos = 0;
+	double solNeg; 
 	double coeficiente;
 	double divisorA = 0;
 	double divisorB = 0;
@@ -194,13 +194,13 @@ int main()
 		{
 			coeficiente = stod(lista[i].tok);
 			if(!lista[i].positivo) coeficiente *= -1;
-			b += coeficiente;
+			solPos += coeficiente;
 		}
 	}
 
-	double ladoDireito = b;
+	double ladoDireito = solPos;
 
-	bNeg = b * -1;
+	solNeg = solPos * -1;
 
 	for(int i = 0; i < indexLista; i++)
 	{
@@ -209,10 +209,10 @@ int main()
 			if(!lista[i].eVariavel && !lista[i].multiplicando && !lista[i].dividindo)
 			{
 				coeficiente = stod(lista[i].tok);
-				if(lista[i].positivo) b -= coeficiente;
-				else b += coeficiente;
-				if(lista[i].positivo) bNeg -= coeficiente;
-				else bNeg += coeficiente;
+				if(lista[i].positivo) solPos -= coeficiente;
+				else solPos += coeficiente;
+				if(lista[i].positivo) solNeg -= coeficiente;
+				else solNeg += coeficiente;
 			}
 			
 			else if(lista[i].eVariavel && !lista[i].multiplicando && !lista[i].dividindo)
@@ -269,12 +269,12 @@ int main()
 		return 1;
 	}
 
-	b = b/(divisorA - divisorB + multiplicadorA - multiplicadorB);
+	solPos = solPos/(divisorA - divisorB + multiplicadorA - multiplicadorB);
 
-	bNeg = bNeg/(divisorA + divisorB + multiplicadorA + multiplicadorB);
+	solNeg = solNeg/(divisorA + divisorB + multiplicadorA + multiplicadorB);
 
-	double prova1 = provaReal(lista, b);
-	double prova2 = provaReal(lista, bNeg);
+	double prova1 = provaReal(lista, solPos);
+	double prova2 = provaReal(lista, solNeg);
 
 	bool temRaiz = false;
 	
@@ -282,13 +282,13 @@ int main()
 
 	if((prova1 >= 0 && prova1 == ladoDireito) || (prova1 < 0 && -prova1 == ladoDireito)) 
 	{
-		cout << variavel << " = " << b << endl;
+		cout << variavel << " = " << solPos << endl;
 		temRaiz = true;
 	}
 
 	if(((prova2 >= 0 && prova2 == ladoDireito) || (prova2 < 0 && -prova2 == ladoDireito)) && ladoDireito != 0) 
 	{
-		cout << variavel << " = " << bNeg << endl;
+		cout << variavel << " = " << solNeg << endl;
 		temRaiz = true;
 	}
 

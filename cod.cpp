@@ -25,6 +25,8 @@ int main()
 	double divisorB = 0;
 	double multiplicadorA = 0;
 	double multiplicadorB = 0;
+	double condicaoPos;
+	double condicaoNeg;
 
 	string in;
 
@@ -139,7 +141,7 @@ int main()
 			lista[i].ladoEsquerdo = false;
 		}
 
-		if(!lista[i].ladoEsquerdo && !lista[i].eVariavel && !lista[i].multiplicando)
+		if(!lista[i].ladoEsquerdo && !lista[i].eVariavel && !lista[i].multiplicando && !lista[i].dividindo)
 		{
 			coeficiente = stoi(lista[i].tok);
 			if(!lista[i].positivo) coeficiente *= -1;
@@ -192,7 +194,7 @@ int main()
 				divisorB += coeficiente;
 			}
 
-			else if(lista[i].eVariavel && !lista[i].multiplicando)
+			else if(lista[i].eVariavel && !lista[i].multiplicando && !lista[i].dividindo)
 			{
 				if(lista[i].positivo) divisorB++;
 				else divisorB--;
@@ -206,20 +208,19 @@ int main()
 			}
 		}
 	}
-
+	
 	// evitando divisão por zero
-	if(!divisorAtivado) divisorA = 1;
-	if(!multiplicadorAtivado) multiplicadorA = 1;
+	if(!divisorAtivado && !multiplicadorAtivado) divisorA = 1;
 
-	if(divisorA - divisorB == 0)
+	if(divisorA - divisorB  + multiplicadorA - multiplicadorB == 0)
 	{
 		cout << "ERRO: variável zerada" << endl;
 		return 1;
 	}
 
-	b = (b/(divisorA - divisorB))/multiplicadorA;
+	b = b/(divisorA - divisorB + multiplicadorA - multiplicadorB);
 
-	bNeg = (bNeg/(divisorA + divisorB))/multiplicadorA;
+	bNeg = bNeg/(divisorA + divisorB + multiplicadorA + multiplicadorB);
 
 	cout << "\nResultado de " << variavel << " para A = B: " << b << endl;
 	cout << "Resultado de " << variavel << " para A = -B: " << bNeg << endl;

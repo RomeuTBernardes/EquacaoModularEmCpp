@@ -7,8 +7,7 @@ Por enquanto, o programa apenas resolve equações que:
     
 - Possuem uma variável apenas;
 - Não realizam potenciação;
-- Realizam apenas uma divisão com variável;
-- Realizam apenas multiplicação da variável do lado direito (B);
+- Possuem duas raízes reais (por enquanto não há checagem de condição);
 - Realizam multiplicação e divisão apenas na variável.
 
 Padrões de input:

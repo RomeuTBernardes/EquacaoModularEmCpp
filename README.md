@@ -1,13 +1,11 @@
 # Resolução de equação modular em C++
 Programa em C++ que resolve equações modulares (|A| = B) simples escritas diretamente no terminal. Realizado como um pequeno exercício de tratamento de string e matemática.
 
-O programa principal que deve ser compilado para uso é "cod.cpp". O outro código é usado para testes.
-
 Por enquanto, o programa apenas resolve equações que: 
     
 - Possuem uma variável apenas;
 - Não realizam potenciação;
-- Possuem duas raízes reais (por enquanto não há checagem de condição);
+- Possuem variáveis apenas dentro do módulo;
 - Realizam multiplicação e divisão apenas na variável.
 
 Padrões de input:
@@ -25,6 +23,5 @@ in:
 
 out: 
 
-Resultado de x para A = B: -3
-
-Resultado de x para A = -B: 4.5
+x = -3
+x = 4.5
